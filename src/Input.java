@@ -45,11 +45,4 @@ public class Input {
         }
     }
 
-    public int[] turn(int row, int col){
-        int[] play = new int[2];
-        play[0] = row;
-        play[1] = col;
-        return play;
-    }
-
 }
