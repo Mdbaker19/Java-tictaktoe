@@ -17,39 +17,52 @@ public class Game {
         boolean draw = false;
         boolean winner = false;
         int turns = 0;
-        do{
 
-            int rowChoice = sc.row();
-            int colChoice = sc.col();
-            space();
+        if(!sc.gameMode()) {
+            System.out.println("Two player mode");
+            do {
+                int rowChoice = sc.row();
+                int colChoice = sc.col();
+                space();
 
-            if(turns % 2 == 0) {
-                addPlay(board, rowChoice, colChoice, me);
-                turns++;
-            } else {
-                addPlay(board, rowChoice, colChoice, ai);
-                turns++;
-            }
-            space();
-            displayBoard(board);
-            if(turns > 8){
-                draw = true;
-                System.out.println("Draw!!!");
-            }
+                if (turns % 2 == 0) {
+                    System.out.println("Player one's turn");
+                    addPlay(board, rowChoice, colChoice, me, sc);
+                    turns++;
+                } else {
+                    System.out.println("Player two's turn");
+                    addPlay(board, rowChoice, colChoice, ai, sc);
+                    turns++;
+                }
+                space();
+                displayBoard(board);
+                if (turns > 8) {
+                    draw = true;
+                    System.out.println("Draw!!!");
+                }
 
-            winner = findWinner(board);
+                winner = findWinner(board);
 
-            if(winner){
-                System.out.println("Winner");
-            }
+                if (winner) {
+                    System.out.println("Winner");
+                }
 
-        }while(!draw && !winner);
+            } while (!draw && !winner);
+        } else {
+            System.out.println("One player mode");
+            onePlayer();
+        }
 
 
     }
 
-    public static void addPlay (char[][] board, int rowChoice, int colChoice, Player player){
-        board[rowChoice][colChoice] = player.getPlay();
+    public static void addPlay (char[][] board, int rowChoice, int colChoice, Player player, Input sc){
+        if(board[rowChoice][colChoice] == ' ') {
+            board[rowChoice][colChoice] = player.getPlay();
+        } else {
+            System.out.println("Invalid play");
+            addPlay(board, sc.row(), sc.col(), player, sc);
+        }
     }
 
     public static void displayBoard(char[][] board){
@@ -93,6 +106,11 @@ public class Game {
 
     public static boolean matchingSet(char a, char b, char c){
         return ((a == b && b == c) && (a != ' ' && b != ' ' && c != ' '));
+    }
+
+
+    public static void onePlayer(){
+        System.out.println("Need to implement an AI here to play");
     }
 
     public static void space(){

@@ -13,6 +13,12 @@ public class Input {
         return this.sc.next();
     }
 
+    public boolean gameMode(){
+        System.out.println("Pick a game mode, [1] player, [2] player");
+        String mode = getNext();
+        return Integer.parseInt(mode) == 1;
+    }
+
     public int row(){
         System.out.println("Pick row");
         String choice = getNext();
