@@ -20,26 +20,24 @@ public class Game {
 
         if(!sc.gameMode()) {
             System.out.println("Two player mode");
+            System.out.println("Player one's turn");
             do {
                 int rowChoice = sc.row();
                 int colChoice = sc.col();
                 space();
 
                 if (turns % 2 == 0) {
-                    System.out.println("Player one's turn");
                     addPlay(board, rowChoice, colChoice, me, sc);
+                    System.out.println("\033[0;39mPlayer two's turn");
                     turns++;
                 } else {
-                    System.out.println("Player two's turn");
                     addPlay(board, rowChoice, colChoice, ai, sc);
+                    System.out.println("\033[0;39mPlayer one's turn");
                     turns++;
                 }
                 space();
                 displayBoard(board);
-                if (turns > 8) {
-                    draw = true;
-                    System.out.println("Draw!!!");
-                }
+                draw = drawCheck(turns);
 
                 winner = findWinner(board);
 
@@ -50,34 +48,74 @@ public class Game {
             } while (!draw && !winner);
         } else {
             System.out.println("One player mode");
-            onePlayer();
+            do {
+                space();
+
+                if (turns % 2 == 0) {
+                    int rowChoice = sc.row();
+                    int colChoice = sc.col();
+                    addPlay(board, rowChoice, colChoice, me, sc);
+                    System.out.println("\033[0;39mComputer's turn");
+                    turns++;
+                } else {
+                    aiPlay(board, ai);
+                    System.out.println("\033[0;39mPlayer one's turn");
+                    turns++;
+                }
+                space();
+                displayBoard(board);
+                draw = drawCheck(turns);
+
+                winner = findWinner(board);
+
+                if (winner) {
+                    System.out.println("Winner!");
+                } else if(draw){
+                    System.out.println("Draw!");
+                }
+
+            } while (!draw && !winner);
         }
 
-
     }
+
+    public static boolean aiPlay(char[][] board, Player player){
+        for(int i = 0; i < 3; i++){
+            for(int j = 0; j < 3; j++){
+                if(board[i][j] == ' '){
+                    board[i][j] = player.getPlay();
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
 
     public static void addPlay (char[][] board, int rowChoice, int colChoice, Player player, Input sc){
         if(board[rowChoice][colChoice] == ' ') {
             board[rowChoice][colChoice] = player.getPlay();
         } else {
-            System.out.println("Invalid play");
+            System.out.println("\033[0;31mInvalid play");
             addPlay(board, sc.row(), sc.col(), player, sc);
         }
     }
 
     public static void displayBoard(char[][] board){
         int counter = 0;
-        System.out.printf("%-4s%d%-4s%d%-4s%d%n"," ", 0, " ", 1, " ", 2);
-        System.out.println("  |----|----|----|");
+        System.out.printf("\033[0;36mColumns =>\033[0;32m  %-4s%d%-4s%d%-4s%d%n"," ", 0, " ", 1, " ", 2);
+        System.out.printf("\033[0;35m%-13s|----|----|----|%n", " ");
         for(char[] row : board){
-            System.out.printf("%d |", counter);
+            System.out.printf("%-11s\033[0;32m%d |", " ", counter);
             counter++;
             for(char spot : row){
-                System.out.printf("  %-1s |", spot);
+                System.out.printf("\033[0;35m  %-1s |", spot);
             }
             System.out.println();
-            System.out.println("  |----|----|----|");
+            System.out.printf("%-13s|----|----|----|%n", " ");
         }
+        System.out.println("\033[0;36m    Rows ^^");
+        System.out.println();
     }
 
     public static boolean findWinner(char[][] board){
@@ -108,15 +146,14 @@ public class Game {
         return ((a == b && b == c) && (a != ' ' && b != ' ' && c != ' '));
     }
 
-
-    public static void onePlayer(){
-        System.out.println("Need to implement an AI here to play");
+    public static boolean drawCheck(int turns){
+        return turns > 8;
     }
+
 
     public static void space(){
         System.out.println(" ");
-        System.out.println(" ");
-        System.out.println(" ");
+        System.out.println("\033[0;38m ");
     }
 
 }

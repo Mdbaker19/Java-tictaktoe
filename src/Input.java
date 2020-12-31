@@ -14,13 +14,13 @@ public class Input {
     }
 
     public boolean gameMode(){
-        System.out.println("Pick a game mode, [1] player, [2] player");
+        System.out.println("\033[0;38mPick a game mode, [1] player, [2] player");
         String mode = getNext();
         return Integer.parseInt(mode) == 1;
     }
 
     public int row(){
-        System.out.println("Pick row");
+        System.out.println("\033[0;38mPick row");
         String choice = getNext();
         try {
             int row = Integer.parseInt(choice);
@@ -30,13 +30,14 @@ public class Input {
                 return row();
             }
         } catch (Exception e){
-            e.printStackTrace();
+            String err = e.getMessage();
+            System.out.println("Invalid input " + err);
             return row();
         }
     }
 
     public int col(){
-        System.out.println("Pick col");
+        System.out.println("\033[0;38mPick col");
         String choice = getNext();
         try {
             int col = Integer.parseInt(choice);
@@ -46,7 +47,8 @@ public class Input {
                 return col();
             }
         } catch (Exception e){
-            e.printStackTrace();
+            String err = e.getMessage();
+            System.out.println("Invalid input " + err);
             return col();
         }
     }
