@@ -42,7 +42,9 @@ public class Game {
                 winner = findWinner(board);
 
                 if (winner) {
-                    System.out.println("Winner");
+                    System.out.println("\033[0;32mWinner!");
+                } else if(draw){
+                    System.out.println("\033[0;32mDraw!");
                 }
 
             } while (!draw && !winner);
@@ -69,9 +71,9 @@ public class Game {
                 winner = findWinner(board);
 
                 if (winner) {
-                    System.out.println("Winner!");
+                    System.out.println("\033[0;32mWinner!");
                 } else if(draw){
-                    System.out.println("Draw!");
+                    System.out.println("\033[0;32mDraw!");
                 }
 
             } while (!draw && !winner);
@@ -103,18 +105,17 @@ public class Game {
 
     public static void displayBoard(char[][] board){
         int counter = 0;
-        System.out.printf("\033[0;36mColumns =>\033[0;32m  %-4s%d%-4s%d%-4s%d%n"," ", 0, " ", 1, " ", 2);
+        System.out.printf("\033[0;32m            %-4s%d%-4s%d%-4s%d%n"," ", 0, " ", 1, " ", 2);
         System.out.printf("\033[0;35m%-13s|----|----|----|%n", " ");
         for(char[] row : board){
-            System.out.printf("%-11s\033[0;32m%d |", " ", counter);
+            System.out.printf("%-11s\033[0;32m%d\033[0;35m |", " ", counter);
             counter++;
             for(char spot : row){
-                System.out.printf("\033[0;35m  %-1s |", spot);
+                System.out.printf("\033[0;37m  %-1s\033[0;35m |", spot);
             }
             System.out.println();
             System.out.printf("%-13s|----|----|----|%n", " ");
         }
-        System.out.println("\033[0;36m    Rows ^^");
         System.out.println();
     }
 
@@ -131,7 +132,7 @@ public class Game {
             winnerFound = true;
         } else if(matchingSet(board[0][0], board[1][1], board[2][2])){
             winnerFound = true;
-        } else if(matchingSet(board[2][0], board[1][1], board[0][0])){
+        } else if(matchingSet(board[0][2], board[1][1], board[2][0])){
             winnerFound = true;
         } else if(matchingSet(board[0][1], board[1][1], board[2][1])){
             winnerFound = true;
