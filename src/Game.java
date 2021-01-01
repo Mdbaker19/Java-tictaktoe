@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Game {
@@ -81,16 +82,39 @@ public class Game {
 
     }
 
+
     public static boolean aiPlay(char[][] board, Player player){
+        ArrayList<String> possiblePlays = new ArrayList<>();
+        ArrayList<Integer> actualPlay = new ArrayList<>();
+
         for(int i = 0; i < 3; i++){
             for(int j = 0; j < 3; j++){
                 if(board[i][j] == ' '){
-                    board[i][j] = player.getPlay();
-                    return true;
+                    int[] play = new int[2];
+                    play[0] = i;
+                    play[1] = j;
+                    possiblePlays.add(Arrays.toString(play));
+
+                    int play1 = i;
+                    int play2 = j;
+                    actualPlay.add(play1);
+                    actualPlay.add(play2);
+
                 }
             }
         }
-        return false;
+        System.out.println(possiblePlays);
+        int listValue = possiblePlays.size();
+        int choice = (int)( Math.random() * listValue);
+        System.out.println(possiblePlays.get(choice));
+
+        int actualChoice = choice * 2;
+
+        int row = actualPlay.get(actualChoice);
+        int col = actualPlay.get(actualChoice + 1);
+
+        board[row][col] = player.getPlay();
+        return true;
     }
 
 
@@ -153,6 +177,7 @@ public class Game {
 
 
     public static void space(){
+        System.out.println(" ");
         System.out.println(" ");
         System.out.println("\033[0;38m ");
     }
